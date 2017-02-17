@@ -16,4 +16,9 @@ class Task extends Model
 
     protected $table = 'tasks';
 
+    protected $fillable = [
+        'parent_id',
+        'title',
+        'status',
+    ];
 }
