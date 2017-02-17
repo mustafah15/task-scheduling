@@ -43,6 +43,9 @@ class RepositoryBase
         return $this->db_connection->where($db_item,$condition,$value)->get();
     }
 
-
+    public function selectAllByColumns($columns = [])
+    {
+        return $this->db_connection->select($columns);
+    }
 
 }
