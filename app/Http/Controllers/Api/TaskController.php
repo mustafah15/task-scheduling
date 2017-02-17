@@ -10,7 +10,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Managers\TaskManager;
 use Illuminate\Routing\Controller as BaseController;
-use Yajra\Datatables\Datatables;
+use Illuminate\Http\Request;
 
 class TaskController extends BaseController
 {
@@ -29,8 +29,22 @@ class TaskController extends BaseController
 
     public function getAllTasks()
     {
-        $data =  $this->manager->selectAllTasksByColumns(['id','title','parent_id','status']);
+        return $this->manager->selectAllTasksByColumns();
+    }
 
-        return Datatables::of($data)->make(true);
+    public function postToDone(Request $request)
+    {
+          return $this->manager->changeToDone($request->input('task_id'));
+    }
+
+    public function postToInProgress(Request $request)
+    {
+        return $this->manager->changeToInProgress($request->input('task_id'));
+    }
+
+    public function getDependencies($id)
+    {
+        return $this->manager->getAllDependencies($id);
+
     }
 }

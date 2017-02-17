@@ -24,6 +24,7 @@
                         <th>Title</th>
                         <th>Parent</th>
                         <th>Complete / In progress</th>
+                        <th>action</th>
                     </tr>
                     </thead>
                     <tbody id="task-list" >
@@ -46,7 +47,7 @@
 
 <script>
 
-        $('#tasks-table').DataTable({
+        var tasks_table =$('#tasks-table').DataTable({
             processing: true,
             serverSide: true,
             ajax: '{!! route('get-all-tasks') !!}',
@@ -54,9 +55,37 @@
                 { data: 'id', name: 'id' },
                 { data: 'title', name: 'title' },
                 { data: 'parent_id', name: 'parent_id' },
-                { data: 'status', name: 'status' }
+                { data: 'status', name: 'status' },
+                { data: 'action', name: 'action', orderable: false, searchable: false}
+
             ]
         });
 
+        function done (id) {
+            $.ajax({
+                url:"{!! route('post-to-done') !!}",
+                type: "POST",
+                data:{
+                    task_id:id
+                },
+                success:function(result){
+                    tasks_table.ajax.url( '{!! route('get-all-tasks') !!}' ).load();
+                }
+            });
+
+        }
+
+        function inprogress(id) {
+            $.ajax({
+                url:"{!! route('post-to-inprogress') !!}",
+                type: "POST",
+                data:{
+                    task_id:id
+                },
+                success:function(result){
+                    tasks_table.ajax.url( '{!! route('get-all-tasks') !!}' ).load();
+                }
+            });
+        }
 </script>
 @endpush

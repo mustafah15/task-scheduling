@@ -10,7 +10,8 @@ namespace App\Managers;
 
 
 use App\Repositories\TaskRepository;
-
+use Yajra\Datatables\Datatables;
+use App\Enums\Status;
 class TaskManager
 {
     protected  $repository ;
@@ -30,9 +31,43 @@ class TaskManager
         return $this->repository->editItem($data,$id);
     }
 
-    public function selectAllTasksByColumns($columns)
+    public function changeToDone($id)
     {
-        return $this->repository->selectAllByColumns($columns);
+       return $this->repository->editItem(['status'=>Status::Done], $id);
+    }
+
+    public function changeToInProgress($id)
+    {
+        return $this->repository->editItem(['status'=>Status::InProcess],$id);
+    }
+
+    public function selectAllTasksByColumns()
+    {
+        $tasks = $this->repository->selectAllByColumns(['id','parent_id','status','title','created_at','updated_at']);
+
+        return Datatables::of($tasks)
+            ->addColumn('action', function ($task) {
+                if($task->status == Status::InProcess)
+                    return '<a class="btn btn-xs btn-primary" onclick="done('.$task->id.')"><i class="glyphicon glyphicon-edit"></i> Mark as Done</a>';
+                elseif ($task->status == Status::Done)
+                    return '<a  class="btn btn-xs btn-danger" onclick="inprogress('.$task->id.')"><i class="glyphicon glyphicon-edit"></i> Mark as In progress</a>';
+                elseif ($task->status == Status::Complete)
+                    return 'Completed';
+            })
+            ->editColumn('status', function ($task){
+                if ($task->status == Status::InProcess)
+                    return "In progress";
+                elseif ($task->status == Status::Done)
+                    return 'Done';
+                elseif ($task->status == Status::Complete)
+                    return 'Complete';
+            } )
+            ->make(true);
+    }
+
+    public function getAllDependencies($task_id)
+    {
+        return $this->repository->checkDependencies($task_id);
     }
 
 }
