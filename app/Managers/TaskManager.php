@@ -87,8 +87,5 @@ class TaskManager
         return $this->repository->getAncestors($id);
     }
 
-    public function getBrothersByParent($parent_id)
-    {
 
-    }
 }
