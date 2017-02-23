@@ -36,16 +36,6 @@ class TaskManager
         return $this->repository->editItem($data,$id);
     }
 
-    public function changeToDone($id)
-    {
-       return $this->repository->editItem(['status'=>Status::Done], $id);
-    }
-
-    public function changeToInProgress($id)
-    {
-        return $this->repository->editItem(['status'=>Status::InProcess],$id);
-    }
-
     public function selectAllTasksByColumns()
     {
         $tasks = $this->repository->selectAllByColumns(['id','parent_id','status','title','created_at','updated_at']);
@@ -95,5 +85,10 @@ class TaskManager
     public function getTaskAncestors($id)
     {
         return $this->repository->getAncestors($id);
+    }
+
+    public function getBrothersByParent($parent_id)
+    {
+
     }
 }

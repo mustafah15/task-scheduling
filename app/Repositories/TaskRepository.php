@@ -26,7 +26,8 @@ class TaskRepository extends RepositoryBase implements RepositoryContract
     public function getDependencies($task_id, $children = [])
     {
 
-        $tasks = $this->db_connection->where('parent_id','=',$task_id)->get(['id','status']);
+        $tasks = $this->db_connection->where('parent_id','=',$task_id)
+            ->get(['id','status']);
 
         foreach ($tasks as $task)
         {
@@ -43,10 +44,21 @@ class TaskRepository extends RepositoryBase implements RepositoryContract
         if ($parent_id == 0 )
             return $ancestors;
         else {
-            $parent = $this->db_connection->where('id', '=', $parent_id)->get(['id', 'status', 'parent_id'])->first();
+            $parent = $this->db_connection
+                ->where('id', '=', $parent_id)
+                ->get(['id', 'status', 'parent_id'])->first();
+
             $ancestors[] = $this->getAncestors($parent->id,[$parent]);
             return $ancestors;
         }
     }
 
+    public function getBrothers($id)
+    {
+        $parent_id = $this->db_connection->find($id)->parent_id;
+
+        return $this->db_connection
+            ->where('parent_id','=',$parent_id)
+            ->get(['status','id']);
+    }
 }

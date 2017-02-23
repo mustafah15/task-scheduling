@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Managers\TaskManager;
+use App\Managers\TaskStatusManager;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 
@@ -37,12 +38,12 @@ class TaskController extends BaseController
 
     public function postToDone(Request $request)
     {
-          return $this->manager->changeToDone($request->input('task_id'));
+          return (new TaskStatusManager())->changeToDone($request->input('task_id'));
     }
 
     public function postToInProgress(Request $request)
     {
-        return $this->manager->changeToInProgress($request->input('task_id'));
+        return (new TaskStatusManager())->changeToInProgress($request->input('task_id'));
     }
 
     public function getDependencies($id)
