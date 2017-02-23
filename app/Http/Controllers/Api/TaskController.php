@@ -50,5 +50,9 @@ class TaskController extends BaseController
         return $this->manager->getAllDependencies($id);
     }
 
+    public function getAncestors($id)
+    {
+        return $this->manager->getTaskAncestors($id);
+    }
 
 }

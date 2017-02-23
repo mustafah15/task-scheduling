@@ -36,4 +36,17 @@ class TaskRepository extends RepositoryBase implements RepositoryContract
         return $children;
     }
 
+    public function getAncestors($id, $ancestors = [])
+    {
+        $parent_id = $this->db_connection->find($id)->parent_id;
+
+        if ($parent_id == 0 )
+            return $ancestors;
+        else {
+            $parent = $this->db_connection->where('id', '=', $parent_id)->get(['id', 'status', 'parent_id'])->first();
+            $ancestors[] = $this->getAncestors($parent->id,[$parent]);
+            return $ancestors;
+        }
+    }
+
 }

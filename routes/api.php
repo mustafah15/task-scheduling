@@ -28,3 +28,4 @@ Route::post('task/edit/{id?}', 'Api\TaskController@postEditTask')->name('post-ed
 Route::delete('task/delete/{id?}', 'Api\TaskController@getDeleteTask')->name('get-delete-task');
 
 Route::get('task/de/{id?}','Api\TaskController@getDependencies')->name('get-dependencies');
+Route::get('task/an/{id?}','Api\TaskController@getAncestors')->name('get-ancestors');

@@ -92,4 +92,8 @@ class TaskManager
         return ($data);
     }
 
+    public function getTaskAncestors($id)
+    {
+        return $this->repository->getAncestors($id);
+    }
 }
