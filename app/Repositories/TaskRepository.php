@@ -18,19 +18,22 @@ class TaskRepository extends RepositoryBase implements RepositoryContract
         $this->db_connection = new Task();
     }
 
-    public function checkDependencies($task_id, $dependencies = [], $num_of_dependencies = 0)
+    public function checkDependencies($task_id)
     {
-        if ($task_id == 0 )
-            return ['num_dependencies'=>$num_of_dependencies,'dependencies'=>$dependencies];
-        else
-        {
-            $tasks = $this->db_connection->where('parent_id','=',$task_id)->get();
-            $dependencies[] = (array) $tasks;
-            $num_of_dependencies += $this->db_connection->where('parent_id','=',$task_id)->count();
+        return $this->db_connection->where('parent_id','=',$task_id)->first();
+    }
 
-            foreach ($tasks as $task)
-                return $this->checkDependencies($task->id, $dependencies, $num_of_dependencies);
+    public function getDependencies($task_id, $children = [])
+    {
+
+        $tasks = $this->db_connection->where('parent_id','=',$task_id)->get(['id']);
+
+        foreach ($tasks as $task)
+        {
+            $children[] = $this->getDependencies($task->id,[$task]);
         }
+
+        return $children;
     }
 
 }

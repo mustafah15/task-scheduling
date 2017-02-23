@@ -67,7 +67,7 @@ class TaskManager
 
     public function getAllDependencies($task_id)
     {
-        return $this->repository->checkDependencies($task_id);
+        return $this->repository->getDependencies($task_id);
     }
 
 }

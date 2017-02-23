@@ -22,7 +22,7 @@ class TaskController extends BaseController
         $this->manager = new TaskManager();
     }
 
-    public function getCreateNew()
+    public function postCreateNew()
     {
 
     }
@@ -45,6 +45,5 @@ class TaskController extends BaseController
     public function getDependencies($id)
     {
         return $this->manager->getAllDependencies($id);
-
     }
 }
