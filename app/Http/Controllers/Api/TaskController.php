@@ -22,9 +22,12 @@ class TaskController extends BaseController
         $this->manager = new TaskManager();
     }
 
-    public function postCreateNew()
+    public function postCreateNew(Request $request)
     {
+        $task['parent_id'] = $request->input('parent_id');
+        $task['title'] = $request->input('title');
 
+        return $this->manager->addNewTask($task);
     }
 
     public function getAllTasks()
@@ -46,4 +49,6 @@ class TaskController extends BaseController
     {
         return $this->manager->getAllDependencies($id);
     }
+
+
 }

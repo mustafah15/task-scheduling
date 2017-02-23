@@ -32,8 +32,8 @@
                     </tbody>
                 </table>
                 <!-- /.table-responsive -->
-
-            </div>
+                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add New Task</button>
+                </div>
             <!-- /.panel-body -->
         </div>
         <!-- /.panel -->
@@ -41,6 +41,36 @@
     <!-- /.col-lg-12 -->
 </div>
 <!-- /.row -->
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <form id="new-task" >
+                    <div class="form-group">
+                        <label title="title">Task Tilte</label>
+                        <input id="task_title" class="form-control" type="text" required name="title">
+                    </div>
+                    <div class="form-group">
+                        <label title="parent_id">Task Parent</label>
+                        <input id="parent_id" type="number" class="form-control" min="0"  value="0" name="parent_id">
+                    </div>
+                    <div class="form-group">
+                        <a class="btn btn-primary" onclick="newtask()">submit</a>
+                    </div>
+                    {{ csrf_field() }}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -60,6 +90,22 @@
 
             ]
         });
+
+
+       function newtask() {
+            $.ajax({
+                url: '{!! route ('post-create-new-task') !!}',
+                type: 'POST',
+                data: {
+                    parent_id:$('#parent_id').val(),
+                    title: $('#task_title').val()
+                },
+                success: function () {
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    tasks_table.ajax.url( '{!! route('get-all-tasks') !!}' ).load();
+                }
+            });
+        }
 
         function done (id) {
             $.ajax({

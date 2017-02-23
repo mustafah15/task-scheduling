@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
 
 Route::get('task/all','Api\TaskController@getAllTasks')->name('get-all-tasks');
 
-Route::get('task/new', 'Api\TaskController@getCreateNew')->name('get-create-new-task');
 Route::post('task/new', 'Api\TaskController@postCreateNew')->name('post-create-new-task');
 
 Route::post('task/to/done','Api\TaskController@postToDone')->name('post-to-done');

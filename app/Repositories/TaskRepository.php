@@ -26,7 +26,7 @@ class TaskRepository extends RepositoryBase implements RepositoryContract
     public function getDependencies($task_id, $children = [])
     {
 
-        $tasks = $this->db_connection->where('parent_id','=',$task_id)->get(['id']);
+        $tasks = $this->db_connection->where('parent_id','=',$task_id)->get(['id','status']);
 
         foreach ($tasks as $task)
         {

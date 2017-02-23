@@ -15,7 +15,7 @@ class RepositoryBase
 
     public function createNew($data)
     {
-        return $this->db_connection->add($data);
+        return $this->db_connection->create($data);
     }
 
     public function editItem($data,$id)

@@ -21,6 +21,11 @@ class TaskManager
         $this->repository = new TaskRepository();
     }
 
+    public function addNewTask($data)
+    {
+        return $this->repository->createNew($data);
+    }
+
     public function getAllTasks()
     {
        return $this->repository->getAll();
@@ -65,9 +70,26 @@ class TaskManager
             ->make(true);
     }
 
+    function array_flatten($array) {
+        if (!is_array($array)) {
+            return false;
+        }
+        $result = array();
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result = array_merge($result, array_flatten($value));
+            } else {
+                $result[$key] = $value;
+            }
+        }
+        return $result;
+    }
+
     public function getAllDependencies($task_id)
     {
-        return $this->repository->getDependencies($task_id);
+        $data['items'] = $this->array_flatten($this->repository->getDependencies($task_id));
+        $data['count'] = count($data['items']);
+        return ($data);
     }
 
 }

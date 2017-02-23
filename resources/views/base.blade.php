@@ -131,6 +131,7 @@
 <script src="{{ URL::asset('public/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('public/vendor/datatables-plugins/dataTables.bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('public/vendor/datatables-responsive/dataTables.responsive.js') }}"></script>
+<script src="{{ URL::asset('public/js/ajaxcontroller.js') }}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 
